@@ -1,12 +1,11 @@
 package com.example.controller;
 
-
 import com.example.entity.Account;
 import com.example.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,16 +26,18 @@ public class SocialMediaController {
         this.accountService = accountService;
     }
 
-
     @PostMapping("register")
     public ResponseEntity<Account> handleAddAccount (@RequestBody Account account) {
         Account createdAccount = accountService.addAccount(account);
 
         return ResponseEntity.ok(createdAccount);
     }
-//    @ExceptionHandler(ResourceNotFoundException.class)
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    public String handleResourceNotFoundException(ResourceNotFoundException ex) {
-//        return "Resource not found: " + ex.getMessage();
-//    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Account> handleLogin (@RequestBody Account account) {
+        System.out.println("we made it to the controller");
+        Account loggedInAccount = accountService.login(account);
+
+        return ResponseEntity.ok(loggedInAccount);
+    }
 }
