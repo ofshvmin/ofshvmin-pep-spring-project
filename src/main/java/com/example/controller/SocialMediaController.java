@@ -3,7 +3,10 @@ package com.example.controller;
 
 import com.example.entity.Account;
 import com.example.service.AccountService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,30 +29,14 @@ public class SocialMediaController {
 
 
     @PostMapping("register")
-    public Account register(@RequestBody String username, String password) {
+    public ResponseEntity<Account> handleAddAccount (@RequestBody Account account) {
+        Account createdAccount = accountService.addAccount(account);
 
-        accountService.registerNewAccount(username, password);  // <----  not at all sure about this
-
-//        return Account.status(201)
-//                .body("Success");
-
-        return null;
+        return ResponseEntity.ok(createdAccount);
     }
-
-//    @ExceptionHandler(RuntimeException.class)
-
-
-
+//    @ExceptionHandler(ResourceNotFoundException.class)
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    public String handleResourceNotFoundException(ResourceNotFoundException ex) {
+//        return "Resource not found: " + ex.getMessage();
+//    }
 }
-
-
-//accountId integer primary key auto_increment,
-//username varchar(255) not null unique,
-//password varchar(255)
-
-
-
-//attempt at postmapping
-//    public Account register(@RequestBody Account newAccount) {
-//        Account account = accountMapper.toEntity(newAccount);
-//        accountRepository.save(account);
