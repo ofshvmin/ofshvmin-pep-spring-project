@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
@@ -49,5 +51,11 @@ public class SocialMediaController {
         Message createdMessage = messageService.createMessage(message);
 
         return ResponseEntity.ok(createdMessage);
+    }
+
+    @GetMapping("/messages")
+    public ResponseEntity<List> handleGetAllMessages() {
+        List<Message> allMessages = messageService.getAllMessages();
+        return ResponseEntity.ok(allMessages);
     }
 }
