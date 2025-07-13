@@ -1,7 +1,9 @@
 package com.example.controller;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.service.AccountService;
+import com.example.service.MessageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,12 +23,14 @@ import org.springframework.web.bind.annotation.*;
 public class SocialMediaController {
 
     private final AccountService accountService;
+    private final MessageService messageService;
 
-    public SocialMediaController(AccountService accountService) {
+    public SocialMediaController(AccountService accountService, MessageService messageService) {
         this.accountService = accountService;
+        this.messageService = messageService;
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<Account> handleAddAccount (@RequestBody Account account) {
         Account createdAccount = accountService.addAccount(account);
 
@@ -35,9 +39,15 @@ public class SocialMediaController {
 
     @PostMapping("/login")
     public ResponseEntity<Account> handleLogin (@RequestBody Account account) {
-        System.out.println("we made it to the controller");
         Account loggedInAccount = accountService.login(account);
 
         return ResponseEntity.ok(loggedInAccount);
+    }
+
+    @PostMapping("/messages")
+    public ResponseEntity<Message> handleCreateMessage(@RequestBody Message message) {
+        Message createdMessage = messageService.createMessage(message);
+
+        return ResponseEntity.ok(createdMessage);
     }
 }

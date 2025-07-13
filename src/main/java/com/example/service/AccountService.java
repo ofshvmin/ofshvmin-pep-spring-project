@@ -19,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-
+    //need @Autowired here?
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
