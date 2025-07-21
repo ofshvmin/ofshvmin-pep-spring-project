@@ -10,11 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
+@Transactional
 public class MessageService {
 
     private final MessageRepository messageRepository;
@@ -48,13 +50,20 @@ public class MessageService {
         }
     }
 
-    public Optional<Message> getMessageById(int messageId) {
-        Optional<Message> messageById = messageRepository.findById(messageId);
+    public Optional<Message> getMessageById(Integer messageId) {
+//        Optional<Message> messageById = messageRepository.findById(messageId);
 
             return messageRepository.findById(messageId);
-
-
-
     }
+
+    public int deleteMessageById(Integer messageId) {
+        if(messageRepository.existsById(messageId)) {
+            messageRepository.deleteById(messageId);
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
 
 }

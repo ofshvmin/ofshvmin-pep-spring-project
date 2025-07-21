@@ -5,7 +5,6 @@ import com.example.entity.Message;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -66,6 +65,16 @@ public class SocialMediaController {
 
         if (messageOptional.isPresent()) {
             return ResponseEntity.ok(messageOptional.get());
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/messages/{messageId}")
+    public ResponseEntity<String> handleDeleteMessageById(@PathVariable Integer messageId) {
+        int deletedCount = messageService.deleteMessageById(messageId);
+
+        if(deletedCount == 1) {
+            return ResponseEntity.ok(String.valueOf(deletedCount));
         }
         return ResponseEntity.ok().build();
     }
