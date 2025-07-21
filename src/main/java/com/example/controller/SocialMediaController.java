@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -58,4 +59,17 @@ public class SocialMediaController {
         List<Message> allMessages = messageService.getAllMessages();
         return ResponseEntity.ok(allMessages);
     }
+
+    @GetMapping("/messages/{messageId}")
+    public ResponseEntity<Message> handleGetMessageById(@PathVariable Integer messageId) {
+        Optional<Message> messageOptional = messageService.getMessageById(messageId);
+
+        if (messageOptional.isPresent()) {
+            return ResponseEntity.ok(messageOptional.get());
+        }
+        return ResponseEntity.ok().build();
+    }
+
+
+
 }

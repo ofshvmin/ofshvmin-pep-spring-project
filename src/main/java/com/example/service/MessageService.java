@@ -46,6 +46,14 @@ public class MessageService {
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public Optional<Message> getMessageById(int messageId) {
+        Optional<Message> messageById = messageRepository.findById(messageId);
+
+            return messageRepository.findById(messageId);
+
+
 
     }
 
