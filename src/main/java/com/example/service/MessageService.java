@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,5 +79,16 @@ public class MessageService {
         messageRepository.save(messageToUpdate);
 
         return 1;
+    }
+
+    public List<Message> getAllMessagesByUserId(int userId) {
+        List<Message> allMessages = messageRepository.findAll();
+        List<Message> allMessagesByUser = new ArrayList<>();
+        for(Message message : allMessages) {
+            if(message.getPostedBy() == userId) {
+                allMessagesByUser.add(message);
+            }
+        }
+        return allMessagesByUser;
     }
 }
