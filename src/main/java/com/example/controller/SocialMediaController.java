@@ -5,12 +5,14 @@ import com.example.entity.Message;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -32,15 +34,20 @@ public class SocialMediaController {
         this.messageService = messageService;
     }
 
+    @GetMapping("/ping")
+    public String ping() {
+        return "pong";
+    }
+
     @PostMapping("/register")
-    public ResponseEntity<Account> handleAddAccount (@RequestBody Account account) {
+    public ResponseEntity<Account> handleAddAccount(@RequestBody Account account) {
         Account createdAccount = accountService.addAccount(account);
 
         return ResponseEntity.ok(createdAccount);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Account> handleLogin (@RequestBody Account account) {
+    public ResponseEntity<Account> handleLogin(@RequestBody Account account) {
         Account loggedInAccount = accountService.login(account);
 
         return ResponseEntity.ok(loggedInAccount);
@@ -73,12 +80,22 @@ public class SocialMediaController {
     public ResponseEntity<String> handleDeleteMessageById(@PathVariable Integer messageId) {
         int deletedCount = messageService.deleteMessageById(messageId);
 
-        if(deletedCount == 1) {
+        if (deletedCount == 1) {
             return ResponseEntity.ok(String.valueOf(deletedCount));
         }
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/messages/{messageId}")
+    public ResponseEntity<String> handleUpdateMessageText(
+            @PathVariable Integer messageId,
+            @RequestBody Map<String, String> requestBody) {
 
+        String newMessageText = requestBody.get("messageText");
+
+        int updatedCount = messageService.updateMessageText(messageId, newMessageText);
+
+        return ResponseEntity.ok(String.valueOf(updatedCount));
+    }
 
 }

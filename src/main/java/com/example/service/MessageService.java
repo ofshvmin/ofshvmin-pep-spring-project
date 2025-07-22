@@ -51,8 +51,6 @@ public class MessageService {
     }
 
     public Optional<Message> getMessageById(Integer messageId) {
-//        Optional<Message> messageById = messageRepository.findById(messageId);
-
             return messageRepository.findById(messageId);
     }
 
@@ -65,5 +63,20 @@ public class MessageService {
         }
     }
 
+    public int updateMessageText(Integer messageId, String newMessageText) {
+        if (newMessageText == null || newMessageText.isBlank() || newMessageText.length() > 255) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid message text");
+        }
 
+        Optional<Message> messageOptional = messageRepository.findById(messageId);
+        if (messageOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Message ID not found");
+        }
+
+        Message messageToUpdate = messageOptional.get();
+        messageToUpdate.setMessageText(newMessageText);
+        messageRepository.save(messageToUpdate);
+
+        return 1;
+    }
 }
